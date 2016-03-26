@@ -6,7 +6,7 @@
 /*   By: rbohmert <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/24 20:59:49 by rbohmert          #+#    #+#             */
-/*   Updated: 2016/03/26 22:48:58 by rbohmert         ###   ########.fr       */
+/*   Updated: 2016/03/26 22:50:42 by rbohmert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ int		sort(int fd, char **line, char *rest)
 
 int		get_next_line(int fd, char **line)
 {
-	static t_list *list;
-	t_list *tmp;
-	char	*str;
-	int ret;
+	static	t_list	*list;
+	t_list			*tmp;
+	char			*str;
+	int				ret;
 
 	ft_push_back(&list, (void *)0, 0);
 	if (!(line))
