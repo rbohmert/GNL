@@ -6,7 +6,7 @@
 /*   By: rbohmert <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/24 20:59:49 by rbohmert          #+#    #+#             */
-/*   Updated: 2016/02/20 15:51:19 by rbohmert         ###   ########.fr       */
+/*   Updated: 2016/03/26 22:48:58 by rbohmert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,24 +84,27 @@ int		sort(int fd, char **line, char *rest)
 
 int		get_next_line(int fd, char **line)
 {
-	static char	rest[MAX_FD][BUFF_SIZE + 2];
-	int			i;
-	int			ret;
+	static t_list *list;
+	t_list *tmp;
+	char	*str;
+	int ret;
 
+	ft_push_back(&list, (void *)0, 0);
 	if (!(line))
 		return (-1);
 	if (fd < 0)
 		return (-1);
-	i = 0;
-	while (rest[i][0] && rest[i][1] != fd)
-		i++;
-	if (!rest[i][0])
+	tmp = list->next;
+	while (tmp && fd != (int)tmp->content_size)
+		tmp = tmp->next;
+	if (!tmp)
 	{
-		rest[i][0] = 1;
-		rest[i][1] = fd;
-		ret = get_line(fd, line, rest[i] + 2, 0);
+		if (!(str = (char *)malloc(BUFF_SIZE)))
+			return (-1);
+		ft_push_back(&list, str, fd);
+		ret = get_line(fd, line, str, 0);
 	}
 	else
-		ret = sort(fd, line, rest[i] + 2);
+		ret = sort(fd, line, tmp->content);
 	return ((ret >= 0 && (**line)) ? 1 : ret);
 }
