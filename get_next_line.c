@@ -6,7 +6,7 @@
 /*   By: rbohmert <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/24 20:59:49 by rbohmert          #+#    #+#             */
-/*   Updated: 2016/03/26 22:50:42 by rbohmert         ###   ########.fr       */
+/*   Updated: 2016/03/28 22:26:22 by rbohmert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,22 @@ int		sort(int fd, char **line, char *rest)
 	return (ret);
 }
 
+void	free_list(t_list *list)
+{
+	t_list *tmp;
+
+	tmp = list->next;
+	free(list);
+	list = tmp;
+	while (list)
+	{
+		free(tmp->content);
+		tmp = tmp->next;
+		free(list);
+		list = tmp;
+	}
+}
+
 int		get_next_line(int fd, char **line)
 {
 	static	t_list	*list;
@@ -90,9 +106,9 @@ int		get_next_line(int fd, char **line)
 	int				ret;
 
 	ft_push_back(&list, (void *)0, 0);
-	if (!(line))
-		return (-1);
-	if (fd < 0)
+	if (fd == -10)
+		free_list(list);
+	if (!(line) || fd < 0)
 		return (-1);
 	tmp = list->next;
 	while (tmp && fd != (int)tmp->content_size)
